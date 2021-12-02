@@ -1,0 +1,28 @@
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+using System.Collections;
+
+
+public static async Task<string> Run(HttpRequest req, ILogger log)
+{  
+    string _strOutPath="PathNotFound";
+
+    log.LogInformation("C# HTTP trigger function processed a request.");
+
+    string fileName = await new StreamReader(req.Body).ReadToEndAsync();
+
+     log.LogInformation("msg Body"+fileName);
+
+foreach (DictionaryEntry de in System.Environment.GetEnvironmentVariables())
+{        
+        if (fileName.ToLower().Contains(de.Key.ToString().ToLower()))
+		 {
+			 _strOutPath=de.Value.ToString();
+			 break;
+	      }
+		
+}
+     return _strOutPath;
+}
